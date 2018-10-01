@@ -39,10 +39,17 @@ sudo docker volume rm $(sudo docker volume ls -q)
 # Dockerfile
 
 A dockerfile contains the information how a image is constructed.
+The following table is an overview about some commands:
 
-TODO
-- commands
-- hint: less commands
+command|usage|wiki link
+---|---|---
+FROM < image name >|the first command in a file which determins the starting point|[wiki link](https://docs.docker.com/engine/reference/builder/#from)
+RUN < command >|the command will be executed on the image|[wiki link](https://docs.docker.com/engine/reference/builder/#run) 
+COPY/ADD < host file > < container file>|copy a file into the conatiner to a spesific path with a specific name (ADD and COPY are the same)|[wiki link](https://docs.docker.com/engine/reference/builder/#add)
+CMD ["< executable >", "< param >", ...]|defines default values for container start (only the last CMD command is executed)|[wiki link](https://docs.docker.com/engine/reference/builder/#cmd)
+EXPOSE < port >|tells docker, that the container listens to that port|[wiki link](https://docs.docker.com/engine/reference/builder/#expose)
+
+Every RUN command within the Dockerfile creates a layer in an image and therefore the image gets bigger. So you should combine **RUN** commands with **&&** to create less layers to reduce the size.
 
 # Interation between Container/Volume/Images
 
@@ -64,9 +71,17 @@ sudo docker images
 
 By using the command above, you do see the image id of the top layer from the image. This is more or less a nice to know fact, but not noticable while using docker. The awareness is important, because of these layers the image size can increes drasticly.
 
-Create a **Container** of an image by using the command
+Create a **Container** of an image by using the *run* command ([Link to the docker wiki](https://docs.docker.com/engine/reference/commandline/run/)):
 
 ````shell
 sudo docker run [options] <image-name>
+# options:
+#   -h <container name>
+#   -v <host directory/file>:<container directory/file>
+#   -p <host port>:<container port>
+#   -e <environment variable>
+#   -d #run in background
 ````
+
+
 
