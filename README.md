@@ -5,3 +5,7 @@ This project contains knowledge that I learnd over time and want to share / pers
 **It is my knowledge, therefore it is not complete and not without error** so take everything with a grain of salt.
 
 All the topics are in there own folders.
+
+Topics (each in its onw folder)
+- Docker
+- Gitlab-ce CI/CD with docker
