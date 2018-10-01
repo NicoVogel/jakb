@@ -73,7 +73,7 @@ The following picture illustrates the interactions between the 'main components'
 
 Lets discuss the image from left to right. The start of everything is the **Dockerfile**. Images are created out of a dockerfile and every command in the dockerfile creates a **Layer** of an image.
 
-**Images** consists of multiple layers. Every layer repesents an intermediate build state of an image. So that if one command changes within the *Dockerfile*, not the entire image has to be rebuild.
+<u>**Images**</u> consists of multiple layers. Every layer repesents an intermediate build state of an image. So that if one command changes within the *Dockerfile*, not the entire image has to be rebuild.
 
 Every Layer is hashed with *SHA256* and the first 10 digits **(!!! need to check that)** are the visible *IMAGE ID* if you use the comment:
 
@@ -83,7 +83,7 @@ sudo docker images
 
 By using the command above, you do see the image id of the top layer from the image. This is more or less a nice to know fact, but not noticable while using docker. The awareness is important, because of these layers the image size can increes drasticly.
 
-Create a **Container** of an image by using the *run* command ([Link to the docker wiki](https://docs.docker.com/engine/reference/commandline/run/)):
+Create a <u>**Container**</u> of an image by using the *run* command ([Link to the docker wiki](https://docs.docker.com/engine/reference/commandline/run/)):
 
 ````shell
 sudo docker run [options] <image-name>
@@ -95,5 +95,11 @@ sudo docker run [options] <image-name>
 #   -d #run in background
 ````
 
+<u>**Volumes**</u> are created by the container. If you want to persist data you needed to use the **-v** option when running a container. Every directory or file which is mapped with -v is persisted and will be availiable again if the container is restarted.
 
+It does also create volumns for every **VOLUME** command in the Dockerfile. All volumes can be listed with the command: 
+
+````shell
+sudo docker volume ls
+````
 
