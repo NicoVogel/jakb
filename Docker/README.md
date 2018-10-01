@@ -43,11 +43,11 @@ The following table is an overview about some commands:
 
 command|usage|wiki link
 ---|---|---
-FROM < image name >|the first command in a file which determins the starting point|[wiki link](https://docs.docker.com/engine/reference/builder/#from)
-RUN < command >|the command will be executed on the image|[wiki link](https://docs.docker.com/engine/reference/builder/#run) 
-COPY/ADD < host file > < container file>|copy a file into the conatiner to a spesific path with a specific name (ADD and COPY are the same)|[wiki link](https://docs.docker.com/engine/reference/builder/#add)
-CMD ["< executable >", "< param >", ...]|defines default values for container start (only the last CMD command is executed)|[wiki link](https://docs.docker.com/engine/reference/builder/#cmd)
-EXPOSE < port >|tells docker, that the container listens to that port|[wiki link](https://docs.docker.com/engine/reference/builder/#expose)
+FROM < image name >|the first command in a file which determins the starting point|[link](https://docs.docker.com/engine/reference/builder/#from)
+RUN < command >|the command will be executed on the image|[link](https://docs.docker.com/engine/reference/builder/#run) 
+COPY/ADD < host file > < container file>|copy a file into the conatiner to a spesific path with a specific name (ADD and COPY are the same)|[link](https://docs.docker.com/engine/reference/builder/#add)
+CMD ["< executable >", "< param >", ...]|defines default values for container start (only the last CMD command is executed)|[link](https://docs.docker.com/engine/reference/builder/#cmd)
+EXPOSE < port >|tells docker, that the container listens to that port|[link](https://docs.docker.com/engine/reference/builder/#expose)
 
 Every RUN command within the Dockerfile creates a layer in an image and therefore the image gets bigger. So you should combine **RUN** commands with **&&** to create less layers to reduce the size.
 
