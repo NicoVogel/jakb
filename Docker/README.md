@@ -43,13 +43,25 @@ The following table is an overview about some commands:
 
 command|usage|wiki link
 ---|---|---
-FROM < image name >|the first command in a file which determins the starting point|[link](https://docs.docker.com/engine/reference/builder/#from)
-RUN < command >|the command will be executed on the image|[link](https://docs.docker.com/engine/reference/builder/#run) 
-COPY/ADD < host file > < container file>|copy a file into the conatiner to a spesific path with a specific name (ADD and COPY are the same)|[link](https://docs.docker.com/engine/reference/builder/#add)
-CMD ["< executable >", "< param >", ...]|defines default values for container start (only the last CMD command is executed)|[link](https://docs.docker.com/engine/reference/builder/#cmd)
-EXPOSE < port >|tells docker, that the container listens to that port|[link](https://docs.docker.com/engine/reference/builder/#expose)
+**FROM** < image name >|the first command in a file which determins the starting point|[link](https://docs.docker.com/engine/reference/builder/#from)
+**RUN** < command >|the command will be executed on the image|[link](https://docs.docker.com/engine/reference/builder/#run) 
+**COPY/ADD** < host file > < container file>|copy a file into the conatiner to a spesific path with a specific name (ADD and COPY are the same)|[link](https://docs.docker.com/engine/reference/builder/#add)
+**CMD** ["< executable >", "< param >", ...]|defines default values for container start (only the last CMD command is executed)|[link](https://docs.docker.com/engine/reference/builder/#cmd)
+**EXPOSE** < port >|tells docker, that the container listens to that port|[link](https://docs.docker.com/engine/reference/builder/#expose)
 
 Every RUN command within the Dockerfile creates a layer in an image and therefore the image gets bigger. So you should combine **RUN** commands with **&&** to create less layers to reduce the size.
+
+**Build Dockerfile**
+
+Build an image from a Dockerfile with the following command ([link to the docker wiki](https://docs.docker.com/engine/reference/commandline/build/#parent-command)):
+
+````shell
+sudo docker build [options] .
+# this command works if the Dockerfile has the name 'Dockerfile'
+# options
+#   -t <image name[:tag name]> # if tag name is not set ist 'latest'
+#   --rm #removes containers that were created for the build process
+````
 
 # Interation between Container/Volume/Images
 
