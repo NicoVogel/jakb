@@ -203,7 +203,9 @@ update values in mvn_build.launch and in gitlab CI values
 
 create .gitlab-ci.yml for your needs
 
-DONE.
+## autcleanup of used gitlab-runner container
+
+https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
 
 # Issues I came across
 
