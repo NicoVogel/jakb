@@ -1,25 +1,16 @@
 # Gitlab CI/CD with docker
 
-This is a simple setup guide to get Gitlab-CE, Gitlab-Runner and Artifactory with docker running for Java.
-
-## List of abbreviations
-
-abbreviations|meaning
----|---
-CI|Continues Integration
-CD|Continues Development
-Gitlab-CE| Gitlab Community Edition
+This is a simple setup guide to get Gitlab-CE, Gitlab-Runner, Apache Achiva and Maven up and running for java. 
 
 ## Requirements
 
 - docker
-- docker-compose
 
 ## Setup Gitlab container 
 
-The following command will create a gitlab container and runs it. Replace the placeholder before running the command. 
+The following command will create a gitlab container and runs it. **Replace the placeholder for hostname before running the command.**
 
-> further information: [docker wiki](https://docs.gitlab.com/omnibus/docker/#run-the-image)
+> further information: [gitlab docker wiki](https://docs.gitlab.com/omnibus/docker/#run-the-image)
 
 ````shell
 sudo docker run --detach \
@@ -35,11 +26,11 @@ sudo docker run --detach \
 
 ## Setup gitlab-runner
 
-The following steps are required to get the gitlab-runner working. I personally preffer the alpine images, because they are smal.
+The following steps are required to get the gitlab-runner working. I personally preffer the alpine images, because they are small, but you can also use the tag *latest* instead of *alpine*.
 
-1. Create the Gitlab-Runner container
+**1. Create the Gitlab-Runner container**
 
-The gitlab-runner needs access to the docker itselfe to start container.
+The gitlab-runner needs access to the docker itselfe to start container, therfore the docker.sock is maped.
 
 ````shell
 
@@ -50,15 +41,15 @@ docker run -d --name gitlab-runner --restart always \
 
 ````
 
-2. Get Conatiner IP from Gitlab
+**2. Get Conatiner IP from Gitlab**
 
-This step is required for the following step.
+This step is required for the following step. It returns the gitlab container IP
 
 ````shell
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gitlab
 ````
 
-3. Update Gitlab external URL
+**3. Update Gitlab external URL**
 
 This step is required so that the gitlab-runner is able to pull the code from gitlab. Connect to the gitlab container: 
 
@@ -82,7 +73,7 @@ Search for the following section (should be the first option)
 external_url '<something inside here>'
 ````
 
-Now insert the container IP from step 3. To apply the changes save the file and execute the following command.
+Now insert the gitlab container IP from step 3. To apply the changes save the file and execute the following command
 
 ````shell
 gitlab-ctl reconfigure
@@ -90,11 +81,25 @@ gitlab-ctl reconfigure
 
 > you can close the console with **exit**
 
-5. Get Runner Token from Gitlab
+**4. Get Runner Token from Gitlab**
 
+The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
 
+- Shared runner (*is globally availiable*)
+    - location: **http://\<localhost>:<80>/admin/runners** 
+    - under the topic **Setup a shared Runner manually**
+- Group runner (*is for all projects within a group availiable*)
+    - location: **http://\<localhost>:<80>/groups/\<group name>/-/settings/ci_cd**
+    - expand **Runner**
+    - under the topic **Setup a shared Runner manually**
+- Project runner (*is only for one project*)
+    - location: **http://\<localhost>:<80>/\<group name>/\<project name>/settings/ci_cd**
+    - expand **Runner**
+    - under the topic **Setup a shared Runner manually**
 
-4. Register runner images
+There is the URL which will be used in the following setup, as well as the registration token.
+
+**5. Register runner images**
 
 These images will be used to run the stages which are defined in the *.gitlab-ci.yml*.
 
@@ -118,19 +123,19 @@ gitlab-runner register \
  --run-untagged \
  --locked="false"
 
- gitlab-runner register \
- --non-interactive \
- --executor "docker" \
- --docker-image maven:3-jdk-8-maven \
- --url "<gitlab container ip>" \
- --registration-token "<gitlab runner token>" \
- --description "<runner name>" \
- --tag-list "<tags comma seperated>" \
- --run-untagged \
- --locked="false"
-
 ````
 
 > advanced config doku: https://docs.gitlab.com/runner/configuration/advanced-configuration.html
 
 > you can close the console with **exit**
+
+
+
+
+## List of abbreviations
+
+abbreviations|meaning
+---|---
+CI|Continues Integration
+CD|Continues Development
+Gitlab-CE| Gitlab Community Edition
