@@ -96,7 +96,8 @@ The registration token for a gitlab-runner can be found on the gitlab page. Ther
     - expand **Runner**
     - under the topic **Setup a shared Runner manually**
 - Project runner (*is only for one project*)
-    - location: **http://\<localhost>:<80>/\<group name>/\<project name>/settings/ci_cd**
+    - location: **http://\<localhost>:<80>/\<group name>/\<project name>/settings/ci_cd** 
+    <br>or<br> **http://\<localhost>:<80>/\<user name>/\<project name>/settings/ci_cd**
     - expand **Runner**
     - under the topic **Setup a shared Runner manually**
 
@@ -158,8 +159,51 @@ sudo docker logs [-f] gitlab-runner
 
 ## Setup project 
 
+### Create project and open it in eclipse
 
+- open gitlab and click on create project, fill the form and press "create project"
+- copy the git repo link
+- open eclipse and select the git view
+- click "clone repository"
+- enter your credentials and click "next", "finish"
+- rightclick on the git repo and select "import projects"
+- select master and import projects
+- switch back to the java view
 
+### Setup project structure
+
+Create the following folder:
+- .m2
+- src/main/java
+- src/test/java
+
+Add the files which are located in the **files** folder into the following destination folder (filename -> directory):
+- settings.xml -> /.m2
+- mvn_build.launch -> /
+- pom.xml -> /
+- .gitignore -> /
+
+Make the following changes to the files:
+- pom.xml -> update groupId, artifactId, version, packaging, name and description
+- settings.xml -> nothing is needed
+- mvn_build.launch -> we change this later
+- .gitonore -> the gitignore was generated from https://www.gitignore.io/api/java,maven,eclipse,intellij 
+
+Now use the git bash or eclipse and commit and push the chages.
+
+## Setup Apache Achiva
+
+setup achiva
+
+## last configuration steps
+
+update values in mvn_build.launch and in gitlab CI values
+
+## add .gitlab-ci.yml to the project
+
+create .gitlab-ci.yml for your needs
+
+DONE.
 
 # Issues I came across
 
