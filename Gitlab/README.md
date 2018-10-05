@@ -2,6 +2,8 @@
 
 This is a simple setup guide to get Gitlab-CE, Gitlab-Runner, Apache Achiva and Maven up and running for java. 
 
+It is also the first time, that I did someting with CI and therefore this is probably not the best solution, but it works.
+
 ## Requirements
 
 - docker
@@ -33,13 +35,13 @@ The following steps are required to get the gitlab-runner working. I personally 
 The gitlab-runner needs access to the docker itselfe to start container, therfore the docker.sock is maped.
 
 ````shell
-
 docker run -d --name gitlab-runner --restart always \
   -v /srv/gitlab-runner/config:/etc/gitlab-runner \
   -v /var/run/docker.sock:/var/run/docker.sock \
   gitlab/gitlab-runner:alpine
-
 ````
+
+> [further information about the gitlab runner image](https://docs.gitlab.com/runner/install/docker.html#docker-image-installation-and-configuration)
 
 **2. Get Conatiner IP from Gitlab**
 
@@ -78,6 +80,7 @@ Now insert the gitlab container IP from step 3. To apply the changes save the fi
 ````shell
 gitlab-ctl reconfigure
 ````
+> [more information about gitlab configuration](https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab)
 
 > you can close the console with **exit**
 
@@ -109,7 +112,7 @@ First connect to the gitlab-runner:
 sudo docker exec -it gitlab-runner sh
 ````
 
-Now replace the placeholder with the information from step 2 and 5. The tags are in this case not realy needed, because of the option *--run-untagged*. for more information 
+Now replace the placeholder with the information from step 2 and 5. The tags are in this case not realy needed, because of the option *--run-untagged*.
 
 ````shell
 gitlab-runner register \
@@ -122,20 +125,74 @@ gitlab-runner register \
  --tag-list "<tags comma seperated>" \
  --run-untagged \
  --locked="false"
-
 ````
 
-> advanced config doku: https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+> [more about runner registration](https://docs.gitlab.com/runner/register/index.html#one-line-registration-command)
 
 > you can close the console with **exit**
 
+**6. [optional] Runner configuration**
+
+Edit the config with the following command **(ROOT IS REQUIRED, otherwise the file will be empty)**
+
+````shell
+sudo nano /srv/gitlab-runner/config/config.toml
+````
+
+Information:
+> [toml datatype](https://github.com/toml-lang/toml)
+
+> [advanced config doku](https://docs.gitlab.com/runner/configuration/advanced-configuration.html)
+
+**7. Check if the runner is connected correctly**
+
+To do so go to the same locations where you copied the registration token from setp 4 and check if there is a runner which wasent there before. The runner will also contain the description and tags which you defied while registration.
+
+If the symbol infront of the runner name is a green dot, then your runner is ready. Otherwise (for example a warning triangle) then you have to check what is wrong with the runner. Helpfull are the gitlab-runner logs. The following command will output the logs:
+
+````shell
+sudo docker logs [-f] gitlab-runner
+```` 
+
+> **-f** is used to continiusly see the logs. To exit this state, use [STRG] + [C]. Without -f you get the latest logs
+
+## Setup project 
 
 
 
-## List of abbreviations
 
-abbreviations|meaning
----|---
-CI|Continues Integration
-CD|Continues Development
-Gitlab-CE| Gitlab Community Edition
+# Issues I came across
+
+## job is not distributed to a runner which is availiable
+
+My problem was that my job was in the pipline, but the gitlab-runner which was availiable did not want to communicate with gitlab.
+
+**Solution**
+
+My runner did not have the *--run-untagged* and my job did not have any tags, therefore my runner didn't receive the job.
+
+## gitlab-runner: config.toml empty after runner registration
+
+I opend the config.toml from the gitlab-runner with *nano config.toml* and the file was empty. So I startet writing the config by myselfe and broke it while doing so...
+
+**Solution**
+
+After deleting the container and running a new instance, I wrote **sudo** infront of nano out of habbit (because all docker commands require it) and the file was not empty. I noticed later that **sudo** did the job.  
+
+## runner registration failed
+
+Here I had two issues:
+
+1. Runner didn't like the url I defined. **solution**: the url has to start with 'http://' or 'https://' and no port is allowed!
+
+2. I chose a *--token* and the registration which works fine without a token didn't work anymore. **Solution** still don't know the solution, but it is not required. This way you chould choose a name for the runner instead of the generated ID.
+
+# References I used to get it running
+
+- The gitlab documentation
+- The docker documentation
+- [Gitlab ci docker tutorial](https://about.gitlab.com/2018/02/05/test-all-the-things-gitlab-ci-docker-examples/)
+- [Gitlab with gitlab-runner with docker-compose](https://github.com/jeshan/gitlab-on-compose)
+- [Youtube tutorial on Gitlab CI](https://www.youtube.com/watch?v=34u4wbeEYEo&list=PLaFCDlD-mVOlnL0f9rl3jyOHNdHU--vlJ&index=1)
+- [How to deploy Maven projects to Artifactory with GitLab CI/CD](https://docs.gitlab.com/ee/ci/examples/artifactory_and_gitlab/)
+- [How to integrate between Apache Archiva and Maven](https://www.mkyong.com/maven/how-to-integrate-between-apache-archiva-and-maven/)
