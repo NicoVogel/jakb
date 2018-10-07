@@ -10,14 +10,17 @@ It is also the first time, that I did someting with CI and therefore this is pro
 
 ## Setup Gitlab container 
 
-The following command will create a gitlab container and runs it. **Replace the placeholder for hostname before running the command.**
+The following command will create a gitlab container and runs it. **Replace the placeholder for hostname and port before running the command.**
 
 > further information: [gitlab docker wiki](https://docs.gitlab.com/omnibus/docker/#run-the-image)
 
 ````shell
-sudo docker run --detach \
+sudo docker run \
+  --detach \
   --hostname <gitlab.example.com> \
-  --publish <public port>:443 --publish <public port>:80 --publish <public port>:22 \
+  --publish <public port>:443 \
+  --publish <public port>:80 \
+  --publish <public port>:22 \
   --name gitlab \
   --restart always \
   --volume /srv/gitlab/config:/etc/gitlab \
@@ -35,9 +38,12 @@ The following steps are required to get the gitlab-runner working. I personally 
 The gitlab-runner needs access to the docker itselfe to start container, therfore the docker.sock is maped.
 
 ````shell
-docker run -d --name gitlab-runner --restart always \
-  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-  -v /var/run/docker.sock:/var/run/docker.sock \
+sudo docker run \
+  --detach \
+  --name gitlab-runner 
+  --restart always \
+  --volume /srv/gitlab-runner:/etc/gitlab-runner \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
   gitlab/gitlab-runner:alpine
 ````
 
@@ -137,7 +143,7 @@ gitlab-runner register \
 Edit the config with the following command **(ROOT IS REQUIRED, otherwise the file will be empty)**
 
 ````shell
-sudo nano /srv/gitlab-runner/config/config.toml
+sudo nano /srv/gitlab-runner/config.toml
 ````
 
 Information:
@@ -193,11 +199,38 @@ Now use the git bash or eclipse and commit and push the chages.
 
 ## Setup Apache Achiva
 
-setup achiva
+Start an achiva docker container with the following command:
+
+````shell
+sudo docker run \
+  --detach \
+  --restart always \
+  --name archiva \
+  --hostname archiva \
+  --publish <public port>:8080 \
+  --volume /srv/archiva:/archiva-data \
+  xetusoss/archiva
+````
+
+Connect to achiva and create a user with read access and a user with read/write access.
+The read user is used in the local maven build and the other user will be used from gitlab to store the files in the repository.
+
+You can also use only one User, this is up to you.
 
 ## last configuration steps
 
 update values in mvn_build.launch and in gitlab CI values
+Open the mvn_build.launch and replace the **###value###** in the **mapEntry** nodes.
+
+- MAVEN_REPO_URL: achiva url with port (http://\<ip>:\<port>)
+- MAVEN_REPO_USER: achiva read-only user name
+- MAVEN_REPO_PASS: achiva read-only user password
+
+Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and click on **Expand** at *Variables*. Enter the following key value pairs:
+
+- MAVEN_REPO_URL: achiva url with port (http://\<ip>:\<port>)
+- MAVEN_REPO_USER: achiva user name
+- MAVEN_REPO_PASS: achiva user password
 
 ## add .gitlab-ci.yml to the project
 
