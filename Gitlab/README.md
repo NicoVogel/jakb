@@ -40,7 +40,7 @@ The gitlab-runner needs access to the docker itselfe to start container, therfor
 ````shell
 sudo docker run \
   --detach \
-  --name gitlab-runner 
+  --name gitlab-runner \
   --restart always \
   --volume /srv/gitlab-runner:/etc/gitlab-runner \
   --volume /var/run/docker.sock:/var/run/docker.sock \
