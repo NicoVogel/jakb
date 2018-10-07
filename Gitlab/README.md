@@ -212,10 +212,16 @@ sudo docker run \
   xetusoss/archiva
 ````
 
+### Users
+
 Connect to achiva and create a user with read access and a user with read/write access.
 The read user is used in the local maven build and the other user will be used from gitlab to store the files in the repository.
 
 You can also use only one User, this is up to you.
+
+### Settings
+
+One important step is to allow redepolyment. Log in as root and open the *Repositories* tab. Click on the *pen* for the **internal** repository. There is a checkbox **Block Redeployments** make sure that it is not checked!
 
 ## last configuration steps
 
@@ -234,11 +240,14 @@ Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and c
 
 ## add .gitlab-ci.yml to the project
 
-create .gitlab-ci.yml for your needs
+Now that everyting is up and running, we can add the file which enables Gitlab-CI. Copy the file **.gitlab-ci.yml** into your project. Now after every commit a build, test and deploy is done.
+
+> [more about gitlab ci config](https://docs.gitlab.com/ce/ci/yaml/)
+
 
 ## autcleanup of used gitlab-runner container
 
-https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
+Sadly the container are not removed after usage. They will slowly fill up your space. You can check out a handy solution I found here: https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
 
 # Issues I came across
 
