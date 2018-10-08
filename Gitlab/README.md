@@ -124,6 +124,8 @@ gitlab-ctl reconfigure
 
 The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
 
+> if you are on the same machine, then you can use the docker gitlab ip with the port 80
+
 - Shared runner (*is globally available*)
     - location: **http://\<localhost>:<80>/admin/runners** 
     - under the topic **Setup a shared Runner manually**
