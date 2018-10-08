@@ -105,7 +105,7 @@ Search for the following section (should be the first option)
 external_url '<something inside here>'
 ````
 
-Now insert the gitlab container IP address from [step 3](#3-update-gitlab-external-url). To apply the changes, save the file and execute the following command:
+Now insert the gitlab container IP address from [step 2](#2-get-container-ip-from-gitlab). To apply the changes, save the file and execute the following command:
 
 ````shell
 gitlab-ctl reconfigure
@@ -143,7 +143,7 @@ First, connect to the gitlab-runner:
 sudo docker exec -it gitlab-runner sh
 ````
 
-Now replace the placeholder with the information from [step 2](#2-get-container-ip-from-gitlab) and [5](#5-register-runner-images). The tags in this case are not really needed, because of the option *--run-untagged*.
+Now replace the placeholder with the information from [step 2](#2-get-container-ip-from-gitlab) and [4](#4-get-runner-token-from-gitlab). The tags in this case are not really needed, because of the option *--run-untagged*.
 
 ````shell
 gitlab-runner register \
