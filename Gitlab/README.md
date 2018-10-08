@@ -248,18 +248,6 @@ sudo docker run \
   xetusoss/archiva
 ````
 
-### Users
-
-# TODO
-change this part
-
-Connect to Archiva and create a user with read access and a user with read/write access.
-The read user is used in the local maven build and the other user will be used from gitlab to store the files in the repository.
-
-You can also use only one User, this is up to you.
-
-### Settings
-
 One important step is to allow redepolyment. Log in as root and open the *Repositories* tab. Click on the *pen* for the **internal** repository. There is a checkbox **Block Redeployments** make sure that it is **not checked**!
 
 ## last configuration steps
@@ -273,9 +261,15 @@ Open the mvn_build.launch and replace the **###value###** in the **mapEntry** no
 
 Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and click on **Expand** at **Variables**. Enter the following key value pairs:
 
-- MAVEN_REPO_URL: Archiva url with port (http://\<ip>:\<port>)
+- MAVEN_REPO_URL: Archiva **docker ip** (http://\<ip>:8080)
 - MAVEN_REPO_USER: Archiva user name
 - MAVEN_REPO_PASS: Archiva user password
+
+Get the archiva docker ip with the following command:
+
+````shell
+sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' archiva
+````
 
 ## add .gitlab-ci.yml to the project
 
