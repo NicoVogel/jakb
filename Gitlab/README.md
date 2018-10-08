@@ -158,7 +158,7 @@ gitlab-runner register \
  --non-interactive \
  --executor "docker" \
  --docker-image alpine:latest \
- --url "<gitlab container ip>" \
+ --url "http://<gitlab container ip>" \
  --registration-token "<gitlab runner token>" \
  --description "<runner name>" \
  --tag-list "<tags comma seperated>" \
@@ -217,7 +217,7 @@ Create the following folders (starting from project folder):
 - src/main/java
 - src/test/java
 
-Add the files which are located in the **files** folder into the following destination folder (filename -> directory):
+Add the files which are located in the **files** [folder of the current git repo](./files) into the following destination folder (filename -> directory):
 - settings.xml -> /.m2
 - mvn_build.launch -> /
 - pom.xml -> /
