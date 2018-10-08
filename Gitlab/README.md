@@ -12,10 +12,12 @@ It is also the first time, that I did something with CI and therefore this is pr
 
 - <a href="#setup-gitlab-container">Setup Gitlab Conatiner</a>
 - <a href="#setup-gitlab-runner">Setup gitlab-runner</a>
-    - <a href="#step1">Create the Gitlab-Runner container</a>
+    - <a href="#1.-create-the-gitlab-runner-container">Create the Gitlab-Runner container</a>
+    - <a href="#2.-get-container-ip-from-gitlab">2. Get Container IP from Gitlab</a>
+    - [3. Update Gitlab external URL](#3.-update-gitlab-external-url)
 
 
-## [Setup Gitlab container](#setup-gitlab-container)
+## Setup Gitlab container
 
 The following command will create and run a gitlab container. **Replace the placeholder for hostname and port before running the command.**
 
@@ -36,12 +38,12 @@ sudo docker run \
   gitlab/gitlab-ce:latest
 ````
 
-## [Setup gitlab-runner](#setup-gitlab-runner)
+## Setup gitlab-runner
 
 The following steps are required to get the gitlab-runner working. I personally prefer the alpine images, because they are small, but you can also use the tag *latest* instead of *alpine*.
 
-[](#step1)
-**1. Create the Gitlab-Runner container**
+
+### 1. Create the Gitlab-Runner container
 
 The gitlab-runner needs access to the docker itself to start the container, therefore the docker.sock is mapped.
 
@@ -57,8 +59,7 @@ sudo docker run \
 
 > [further information about the gitlab runner image](https://docs.gitlab.com/runner/install/docker.html#docker-image-installation-and-configuration)
 
-[](#step2)
-**2. Get Container IP from Gitlab**
+### 2. Get Container IP from Gitlab
 
 This step is required for the following [step 3](#step3). It returns the gitlab container IP address.
 
@@ -66,8 +67,7 @@ This step is required for the following [step 3](#step3). It returns the gitlab 
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gitlab
 ````
 
-[](#step3)
-**3. Update Gitlab external URL**
+### 3. Update Gitlab external URL
 
 This step is required for the gitlab-runner in order to pull the code from gitlab. Connect to the gitlab container: 
 
