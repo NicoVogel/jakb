@@ -250,6 +250,9 @@ sudo docker run \
 
 ### Users
 
+# TODO
+change this part
+
 Connect to Archiva and create a user with read access and a user with read/write access.
 The read user is used in the local maven build and the other user will be used from gitlab to store the files in the repository.
 
@@ -268,7 +271,7 @@ Open the mvn_build.launch and replace the **###value###** in the **mapEntry** no
 - MAVEN_REPO_USER: Archiva read-only user name
 - MAVEN_REPO_PASS: Archiva read-only user password
 
-Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and click on **Expand** at *Variables*. Enter the following key value pairs:
+Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and click on **Expand** at **Variables**. Enter the following key value pairs:
 
 - MAVEN_REPO_URL: Archiva url with port (http://\<ip>:\<port>)
 - MAVEN_REPO_USER: Archiva user name
