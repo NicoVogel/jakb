@@ -10,12 +10,26 @@ It is also the first time, that I did something with CI and therefore this is pr
 
 ## Topics
 
-- <a href="#setup-gitlab-container">Setup Gitlab Conatiner</a>
-- <a href="#setup-gitlab-runner">Setup gitlab-runner</a>
-    - <a href="#1-create-the-gitlab-runner-container">Create the Gitlab-Runner container</a>
-    - <a href="#2-get-container-ip-from-gitlab">2. Get Container IP from Gitlab</a>
-    - [3. Update Gitlab external URL](#3-update-gitlab-external-url)
 
+- [Setup](#setup)
+    - [Setup Gitlab Conatiner](#setup-gitlab-container)
+    - [Setup gitlab-runner](#setup-gitlab-runner)
+        - [1. Create the Gitlab-Runner container](#1-create-the-gitlab-runner-container)
+        - [2. Get Container IP from Gitlab](#2-get-container-ip-from-gitlab)
+        - [3. Update Gitlab external URL](#3-update-gitlab-external-url)
+        - [4. Get Runner Token from Gitlab](#4-get-runner-token-from-gitlab)
+        - [5. Register runner images](#5-register-runner-images)
+        - [6. \[optional\] Runner configuration](#6-optional-runner-configuration)
+        - [7. Check if the runner is connected correctly](#7-check-if-the-runner-is-connected-correctly)
+    - [Setup project](#setup-project)
+    - [Setup Apache Archiva](#setup-apache-archiva)
+    - [last configuration steps](#last-configuration-steps)
+    - [add .gitlab-ci.yml to the project](#add-gitlab-ciyml-to-the-project)
+    - [autocleanup of used gitlab-runner container](#autocleanup-of-used-gitlab-runner-container)
+- [Issues I came across](#issues-i-came-across)
+- [References I used to get it running](#references-i-used-to-get-it-running)
+
+# Setup
 
 ## Setup Gitlab container
 
@@ -100,8 +114,7 @@ gitlab-ctl reconfigure
 
 > you can close the console with **exit**
 
-[](#step4)
-**4. Get Runner Token from Gitlab**
+### 4. Get Runner Token from Gitlab
 
 The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
 
@@ -120,8 +133,7 @@ The registration token for a gitlab-runner can be found on the gitlab page. Ther
 
 There you can find the URL which will be used in the following setup, as well as the registration token.
 
-[](#step5)
-**5. Register runner images**
+### 5. Register runner images
 
 These images will be used to run the stages which are defined in the *.gitlab-ci.yml*.
 
@@ -150,8 +162,7 @@ gitlab-runner register \
 
 > you can close the console with **exit**
 
-[](#step6)
-**6. [optional] Runner configuration**
+### 6. [optional] Runner configuration
 
 Edit the config with the following command **(ROOT IS REQUIRED, otherwise the file will be empty)**
 
@@ -164,8 +175,7 @@ Information:
 
 > [advanced config doku](https://docs.gitlab.com/runner/configuration/advanced-configuration.html)
 
-[](#step7)
-**7. Check if the runner is connected correctly**
+### 7. Check if the runner is connected correctly
 
 To do so, go to the same location where you copied the registration token from [step 4](#step4) and check if there is a runner which wasn't there before. The runner will also contain the description and tags which you have defined while registration.
 
@@ -179,7 +189,7 @@ sudo docker logs [-f] gitlab-runner
 
 > **-f** is used to continiusly see the logs. To exit this state, use [STRG] + [C]. Without -f you get the latest logs
 
-## [Setup project](#setup-project) 
+## Setup project
 
 ### Create project and open in eclipse
 
@@ -213,7 +223,7 @@ Make the following changes to the files:
 
 Now use the git bash or eclipse and commit and push the chages.
 
-## [Setup Apache Archiva](#setup-apache-archiva)
+## Setup Apache Archiva
 
 Start an archiva docker container with the following command:
 
@@ -239,7 +249,7 @@ You can also use only one User, this is up to you.
 
 One important step is to allow redepolyment. Log in as root and open the *Repositories* tab. Click on the *pen* for the **internal** repository. There is a checkbox **Block Redeployments** make sure that it is **not checked**!
 
-## [last configuration steps](#last-configuration)
+## last configuration steps
 
 update values in mvn_build.launch and in gitlab CI values
 Open the mvn_build.launch and replace the **###value###** in the **mapEntry** nodes.
@@ -254,18 +264,18 @@ Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and c
 - MAVEN_REPO_USER: Archiva user name
 - MAVEN_REPO_PASS: Archiva user password
 
-## [add .gitlab-ci.yml to the project](#add-gitlab-ci)
+## add .gitlab-ci.yml to the project
 
 Now that everything is up and running, we can add the file which enables Gitlab-CI. Copy the file **.gitlab-ci.yml** into your project. Now after every commit a build, test and a deployment is done.
 
 > [more about gitlab ci config](https://docs.gitlab.com/ce/ci/yaml/)
 
 
-## [autocleanup of used gitlab-runner container](#autocleanup)
+## autocleanup of used gitlab-runner container
 
 Sadly the containers are not removed after usage. They will slowly fill up your space. You can check out a handy solution I found here: https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
 
-# [Issues I came across](#issues)
+# Issues I came across
 
 ## job is not distributed to a runner which is availiable
 
@@ -291,7 +301,7 @@ Here I had two issues:
 
 2. I chose a *--token* at the point of runner registration which unfortunately did not work. **Solution**: I still don't know the solution, but it is not required. This way you chould choose a name for the runner instead of the generated ID.
 
-# [References I used to get it running](#references)
+# References I used to get it running
 
 - The gitlab documentation
 - The docker documentation
