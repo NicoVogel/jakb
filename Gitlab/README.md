@@ -261,7 +261,7 @@ One important step is to allow redepolyment. Log in as root and open the *Reposi
 
 ## last configuration steps
 
-update values in mvn_build.launch and in gitlab CI values
+update values in mvn_build.launch (which is located in the root of the project folder) and in gitlab CI values
 Open the mvn_build.launch and replace the **###value###** in the **mapEntry** nodes.
 
 - MAVEN_REPO_URL: Archiva url with port (http://\<ip>:\<port>)
