@@ -10,10 +10,10 @@ It is also the first time, that I did something with CI and therefore this is pr
 
 ## Topics
 
-- <a href="#setup-gitlab">Setup Gitlab</a>
+- <a href="#setup-gitlab-container">Setup Gitlab</a>
 
 
-## [Setup Gitlab container](#setup-gitlab)
+## [Setup Gitlab container](#setup-gitlab-container)
 
 The following command will create and run a gitlab container. **Replace the placeholder for hostname and port before running the command.**
 
