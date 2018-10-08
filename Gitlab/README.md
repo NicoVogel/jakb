@@ -227,7 +227,9 @@ Make the following changes to the files:
 - pom.xml -> update groupId, artifactId, version, packaging, name and description
 - settings.xml -> nothing is needed
 - mvn_build.launch -> we change this later
-- .gitonore -> the gitignore was generated from https://www.gitignore.io/api/java,maven,eclipse,intellij 
+- .gitonore -> add a dot infront of the filename
+
+> the gitignore was generated from https://www.gitignore.io/api/java,maven,eclipse,intellij and the line which excludes maven *.launch files was removed. 
 
 Now use the git bash or eclipse and commit and push the chages.
 
