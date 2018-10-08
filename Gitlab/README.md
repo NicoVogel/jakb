@@ -12,9 +12,9 @@ It is also the first time, that I did something with CI and therefore this is pr
 
 - <a href="#setup-gitlab-container">Setup Gitlab Conatiner</a>
 - <a href="#setup-gitlab-runner">Setup gitlab-runner</a>
-    - <a href="#1.-create-the-gitlab-runner-container">Create the Gitlab-Runner container</a>
-    - <a href="#2.-get-container-ip-from-gitlab">2. Get Container IP from Gitlab</a>
-    - [3. Update Gitlab external URL](#3.-update-gitlab-external-url)
+    - <a href="#1-create-the-gitlab-runner-container">Create the Gitlab-Runner container</a>
+    - <a href="#2-get-container-ip-from-gitlab">2. Get Container IP from Gitlab</a>
+    - [3. Update Gitlab external URL](#3-update-gitlab-external-url)
 
 
 ## Setup Gitlab container
