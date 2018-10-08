@@ -8,7 +8,12 @@ It is also the first time, that I did something with CI and therefore this is pr
 
 - Docker
 
-## Setup Gitlab container 
+## Topics
+
+- <a href="#setup-gitlab">Setup Gitlab</a>
+
+
+## [Setup Gitlab container](#setup-gitlab)
 
 The following command will create and run a gitlab container. **Replace the placeholder for hostname and port before running the command.**
 
@@ -29,10 +34,11 @@ sudo docker run \
   gitlab/gitlab-ce:latest
 ````
 
-## Setup gitlab-runner
+## [Setup gitlab-runner](#setup-gitlab-runner)
 
 The following steps are required to get the gitlab-runner working. I personally prefer the alpine images, because they are small, but you can also use the tag *latest* instead of *alpine*.
 
+[](#step1)
 **1. Create the Gitlab-Runner container**
 
 The gitlab-runner needs access to the docker itself to start the container, therefore the docker.sock is mapped.
@@ -49,14 +55,16 @@ sudo docker run \
 
 > [further information about the gitlab runner image](https://docs.gitlab.com/runner/install/docker.html#docker-image-installation-and-configuration)
 
-**2. Get Conatiner IP from Gitlab**
+[](#step2)
+**2. Get Container IP from Gitlab**
 
-This step is required for the following step 3. It returns the gitlab container IP address.
+This step is required for the following [step 3](#step3). It returns the gitlab container IP address.
 
 ````shell
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gitlab
 ````
 
+[](#step3)
 **3. Update Gitlab external URL**
 
 This step is required for the gitlab-runner in order to pull the code from gitlab. Connect to the gitlab container: 
@@ -90,6 +98,7 @@ gitlab-ctl reconfigure
 
 > you can close the console with **exit**
 
+[](#step4)
 **4. Get Runner Token from Gitlab**
 
 The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
@@ -109,6 +118,7 @@ The registration token for a gitlab-runner can be found on the gitlab page. Ther
 
 There you can find the URL which will be used in the following setup, as well as the registration token.
 
+[](#step5)
 **5. Register runner images**
 
 These images will be used to run the stages which are defined in the *.gitlab-ci.yml*.
@@ -119,7 +129,7 @@ First, connect to the gitlab-runner:
 sudo docker exec -it gitlab-runner sh
 ````
 
-Now replace the placeholder with the information from step 2 and 5. The tags in this case are not really needed, because of the option *--run-untagged*.
+Now replace the placeholder with the information from [step 2](#step2) and [5](#step5). The tags in this case are not really needed, because of the option *--run-untagged*.
 
 ````shell
 gitlab-runner register \
@@ -138,6 +148,7 @@ gitlab-runner register \
 
 > you can close the console with **exit**
 
+[](#step6)
 **6. [optional] Runner configuration**
 
 Edit the config with the following command **(ROOT IS REQUIRED, otherwise the file will be empty)**
@@ -151,9 +162,10 @@ Information:
 
 > [advanced config doku](https://docs.gitlab.com/runner/configuration/advanced-configuration.html)
 
+[](#step7)
 **7. Check if the runner is connected correctly**
 
-To do so, go to the same location where you copied the registration token from step 4 and check if there is a runner which wasn't there before. The runner will also contain the description and tags which you have defined while registration.
+To do so, go to the same location where you copied the registration token from [step 4](#step4) and check if there is a runner which wasn't there before. The runner will also contain the description and tags which you have defined while registration.
 
 If the symbol in front of the runner name is a green dot, then your runner is ready. Otherwise (for example a warning triangle) you have to check what is wrong with the runner. Helpful are the gitlab-runner logs. 
 
@@ -165,7 +177,7 @@ sudo docker logs [-f] gitlab-runner
 
 > **-f** is used to continiusly see the logs. To exit this state, use [STRG] + [C]. Without -f you get the latest logs
 
-## Setup project 
+## [Setup project](#setup-project) 
 
 ### Create project and open in eclipse
 
@@ -199,7 +211,7 @@ Make the following changes to the files:
 
 Now use the git bash or eclipse and commit and push the chages.
 
-## Setup Apache Archiva
+## [Setup Apache Archiva](#setup-apache-archiva)
 
 Start an archiva docker container with the following command:
 
@@ -225,7 +237,7 @@ You can also use only one User, this is up to you.
 
 One important step is to allow redepolyment. Log in as root and open the *Repositories* tab. Click on the *pen* for the **internal** repository. There is a checkbox **Block Redeployments** make sure that it is **not checked**!
 
-## last configuration steps
+## [last configuration steps](#last-configuration)
 
 update values in mvn_build.launch and in gitlab CI values
 Open the mvn_build.launch and replace the **###value###** in the **mapEntry** nodes.
@@ -240,18 +252,18 @@ Open gitlab and navigate to your project, than go to *Settings*, *CI / CD* and c
 - MAVEN_REPO_USER: Archiva user name
 - MAVEN_REPO_PASS: Archiva user password
 
-## add .gitlab-ci.yml to the project
+## [add .gitlab-ci.yml to the project](#add-gitlab-ci)
 
 Now that everything is up and running, we can add the file which enables Gitlab-CI. Copy the file **.gitlab-ci.yml** into your project. Now after every commit a build, test and a deployment is done.
 
 > [more about gitlab ci config](https://docs.gitlab.com/ce/ci/yaml/)
 
 
-## autocleanup of used gitlab-runner container
+## [autocleanup of used gitlab-runner container](#autocleanup)
 
 Sadly the containers are not removed after usage. They will slowly fill up your space. You can check out a handy solution I found here: https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
 
-# Issues I came across
+# [Issues I came across](#issues)
 
 ## job is not distributed to a runner which is availiable
 
@@ -277,7 +289,7 @@ Here I had two issues:
 
 2. I chose a *--token* at the point of runner registration which unfortunately did not work. **Solution**: I still don't know the solution, but it is not required. This way you chould choose a name for the runner instead of the generated ID.
 
-# References I used to get it running
+# [References I used to get it running](#references)
 
 - The gitlab documentation
 - The docker documentation
