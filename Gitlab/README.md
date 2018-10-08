@@ -102,10 +102,16 @@ Search for the following section (should be the first option)
 ##! URL on which GitLab will be reachable.
 ##! For more details on configuring external_url see:
 ##! https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab
-external_url '<something inside here>'
+# external_url 'EXTERNAL GENERATED ID'
 ````
 
-Now insert the gitlab container IP address from [step 2](#2-get-container-ip-from-gitlab). To apply the changes, save the file and execute the following command:
+Now **uncomment the line** and insert the gitlab container IP address from [step 2](#2-get-container-ip-from-gitlab) as follows:
+
+````rb
+external_url 'http://<gitlab ip address>'
+````
+
+To apply the changes, save the file and execute the following command:
 
 ````shell
 gitlab-ctl reconfigure
@@ -118,10 +124,10 @@ gitlab-ctl reconfigure
 
 The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
 
-- Shared runner (*is globally availiable*)
+- Shared runner (*is globally available*)
     - location: **http://\<localhost>:<80>/admin/runners** 
     - under the topic **Setup a shared Runner manually**
-- Group runner (*is for all projects within a group availiable*)
+- Group runner (*is for all projects within a group available*)
     - location: **http://\<localhost>:<80>/groups/\<group name>/-/settings/ci_cd**
     - expand **Runner**
     - under the topic **Setup a shared Runner manually**
