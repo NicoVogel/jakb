@@ -122,7 +122,7 @@ gitlab-ctl reconfigure
 
 ### 4. Get Runner Token from Gitlab
 
-The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner:
+The registration token for a gitlab-runner can be found on the gitlab page. There are the following three types of runner, **choose one**:
 
 > if you are on the same machine, then you can use the docker gitlab ip with the port 80
 
