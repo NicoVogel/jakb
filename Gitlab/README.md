@@ -75,7 +75,7 @@ sudo docker run \
 
 ### 2. Get Container IP from Gitlab
 
-This step is required for the following [step 3](#step3). It returns the gitlab container IP address.
+This step is required for the following [step 3](#3-update-gitlab-external-url). It returns the gitlab container IP address.
 
 ````shell
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gitlab
@@ -105,7 +105,7 @@ Search for the following section (should be the first option)
 external_url '<something inside here>'
 ````
 
-Now insert the gitlab container IP address from step 3. To apply the changes, save the file and execute the following command:
+Now insert the gitlab container IP address from [step 3](#3-update-gitlab-external-url). To apply the changes, save the file and execute the following command:
 
 ````shell
 gitlab-ctl reconfigure
@@ -143,7 +143,7 @@ First, connect to the gitlab-runner:
 sudo docker exec -it gitlab-runner sh
 ````
 
-Now replace the placeholder with the information from [step 2](#step2) and [5](#step5). The tags in this case are not really needed, because of the option *--run-untagged*.
+Now replace the placeholder with the information from [step 2](#2-get-container-ip-from-gitlab) and [5](#5-register-runner-images). The tags in this case are not really needed, because of the option *--run-untagged*.
 
 ````shell
 gitlab-runner register \
@@ -177,7 +177,7 @@ Information:
 
 ### 7. Check if the runner is connected correctly
 
-To do so, go to the same location where you copied the registration token from [step 4](#step4) and check if there is a runner which wasn't there before. The runner will also contain the description and tags which you have defined while registration.
+To do so, go to the same location where you copied the registration token from [step 4](#4-get-runner-token-from-gitlab) and check if there is a runner which wasn't there before. The runner will also contain the description and tags which you have defined while registration.
 
 If the symbol in front of the runner name is a green dot, then your runner is ready. Otherwise (for example a warning triangle) you have to check what is wrong with the runner. Helpful are the gitlab-runner logs. 
 
