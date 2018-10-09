@@ -29,9 +29,8 @@ Download an image from [here](https://www.alpinelinux.org/downloads/). For examp
         - Click on add disk
             - Select the Alpine ISO
     - Select **Network**
-        - Select **Adapter 2**
-            - Tick enable
-            - choose **Host-only Adapter**
+        - Select **Adapter 1**
+            - choose **Bridged Adapter**
 - Click **Start**
 
 ## Setup Alpine
@@ -68,9 +67,6 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet dhcp
-
-auto eth1
-iface eth1 inet dhcp
         hostname alpine
 ````
 
@@ -82,7 +78,7 @@ Aktivate the changes with the following command:
 /etc/init.d/networking restart
 ````
 
-> [More information about editing the network](https://wiki.alpinelinux.org/wiki/Configure_Networking#Interface_Configuration)
+> [More information about editing the network](https://wiki.alpinelinux.org/wiki/Configure_Networking)
 
 ### Setup Repositories
 
@@ -98,7 +94,7 @@ Start editing with **:e** and add the following entities:
 ````config
 http://dl-cdn.alpinelinux.org/alpine/v3.8/main
 http://dl-cdn.alpinelinux.org/alpine/v3.8/community
-`````
+````
 
 Press **[ESC]** and enter **:wq** to save and exit the file.
 
@@ -113,6 +109,18 @@ Use the following command to install docker, ssh and nano
 
 ````shell
 apk add --no-cache docker, openssh, nano
+````
+
+Open the ssh configuration
+
+````shell
+nano /ect/ssh/ssh_config
+````
+
+Add the follosing line at the end
+
+````config
+PermitRootLogin yes
 ````
 
 Add docker and ssh to the startup services
@@ -140,4 +148,4 @@ TODO
 
 ## Connect to the VM with Putty
 
-TODO
+Get the ip of the alpine with **ifconfig eth0** and use this ip in putty.
