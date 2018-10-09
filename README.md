@@ -6,6 +6,7 @@ This project contains knowledge that I learnd over time and want to share / pers
 
 All the topics are in there own folders.
 
-Topics (each in its onw folder)
-- Docker
-- Gitlab-ce CI/CD with docker
+Topics:
+- [Docker](./Docker)
+- [Gitlab-ce CI/CD with docker](./Gitlab)
+- [Alpine Linux as Docker Host](./Alpine Linux)
