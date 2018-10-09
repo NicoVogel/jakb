@@ -130,3 +130,12 @@ service docker start
 > [install docker wiki](https://wiki.alpinelinux.org/wiki/Docker)
 
 > [install ssh-server](https://wiki.alpinelinux.org/wiki/Setting_up_a_ssh-server)
+
+
+## Create a Snapshot of the VM in Virtualbox
+
+TODO
+
+## Connect to the VM with Putty
+
+TODO
