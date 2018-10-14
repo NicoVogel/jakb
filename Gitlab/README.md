@@ -250,6 +250,12 @@ sudo docker run \
   xetusoss/archiva
 ````
 
+> if the container does not want to start, check the logs with
+> ````shell
+> sudo docker logs -f archiva
+> ````
+> in case that it is a permission issue, check out the issue I had
+
 One important step is to allow redepolyment. Log in as root and open the *Repositories* tab. Click on the *pen* for the **internal** repository. There is a checkbox **Block Redeployments** make sure that it is **not checked**!
 
 ## last configuration steps
@@ -309,6 +315,20 @@ Here I had two issues:
 1. Runner didn't like the url I defined. **Solution**: the url has to start with 'http://' or 'https://' and no port is allowed!
 
 2. I chose a *--token* at the point of runner registration which unfortunately did not work. **Solution**: I still don't know the solution, but it is not required. This way you chould choose a name for the runner instead of the generated ID.
+
+## archiva permisions denied
+
+I had the following error in the archiva logs
+
+**Permission denied: Cannot create '/archiva-data' directory when using volume option**
+
+according to [this post](https://github.com/xetus-oss/docker-archiva/issues/3) it should be fixed, but it didn't work for me. I had to change the permissions of the share folder.
+
+In the code above I mapped */srv/archiva* to */archiva-data* so navigate to the **srv** and execude the following command:
+
+````shell
+sudo chmod -R ugo+rw archiva/
+````
 
 # References I used to get it running
 
