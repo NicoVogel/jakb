@@ -27,6 +27,7 @@ It is also the first time, that I did something with CI and therefore this is pr
     - [Setup Apache Archiva](#setup-apache-archiva)
     - [last configuration steps](#last-configuration-steps)
     - [add .gitlab-ci.yml to the project](#add-gitlab-ciyml-to-the-project)
+    - [Manual cleanup](#manual-cleanup)
     - [autocleanup of used gitlab-runner container](#autocleanup-of-used-gitlab-runner-container)
 - [Issues I came across](#issues-i-came-across)
 - [References I used to get it running](#references-i-used-to-get-it-running)
@@ -286,9 +287,44 @@ Now that everything is up and running, we can add the file which enables Gitlab-
 > [more about gitlab ci config](https://docs.gitlab.com/ce/ci/yaml/)
 
 
+## Manual cleanup
+
+To remove the container which were created by the gitlab-runner use the following command:
+
+````shell
+sudo docker rm $(sudo docker inspect --format '{{ range .Config.Cmd }}{{ if eq . "gitlab-runner-cache" }}{{ $.Config.Hostname }}{{ end }}{{ end }}' $(sudo docker ps -a -q))
+````
+
+The command consists out of three parts:
+
+1. sudo docker rm: simply the delete command
+2. sudo docker inspect: does filter for container which have the command **gitlab-runner-cache**
+3. sudo docker ps: get all docker container and only the hostnames
+
+The *--format* explanation:
+
+everything within of **{{ }}** is code which is executed. The following code was written:
+
+````lua
+-- range is like for each
+-- . is the current context
+range .Config.Cmd
+    -- in this case the . is the value of the current index
+    if eq . "gitlab-runner-cache"
+        -- $ is the root node
+        $.Config.Hostname
+    end
+end
+````
+
+
 ## autocleanup of used gitlab-runner container
 
 Sadly the containers are not removed after usage. They will slowly fill up your space. You can check out a handy solution I found here: https://gitlab.com/gitlab-org/gitlab-runner-docker-cleanup
+
+**I had the problem that it deleted my gitlab-runner**
+
+I use the following command from Manual cleanup
 
 # Issues I came across
 
